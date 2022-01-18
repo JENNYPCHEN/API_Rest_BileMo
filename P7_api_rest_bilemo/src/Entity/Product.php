@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * collectionOperations={"GET"={"normalization_Context"={"groups":{"products:read"}}}},
  * itemOperations={"GET"={"normalization_Context"={"groups":{"products:read"}}}},
  * normalizationContext={"groups":{"products:read"}},
- * attributes={ "pagination_items_per_page" =40}
+ * attributes={ "pagination_items_per_page"= 40}
  *)
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  * @ApiFilter(RangeFilter::class,properties={"price"})
@@ -31,7 +31,7 @@ class Product
 {
     public function __construct()
     {
-        $this->createDate = new DateTimeImmutable();
+        $this->createDate = new DateTime();
     }
     /**
      * @ORM\Id
@@ -106,7 +106,7 @@ class Product
     private $createDate=null;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Brand::class, inversedBy="products")
+     * @ORM\ManyToOne(targetEntity=Brand::class, inversedBy="products",cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"products:read"})
      */
@@ -209,7 +209,7 @@ class Product
         return $this->createDate;
     }
 
-    public function setCreateDate(\DateTimeImmutable $createDate): self
+    public function setCreateDate(\DateTime $createDate): self
     {
         $this->createDate = $createDate;
 

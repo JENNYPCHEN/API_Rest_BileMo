@@ -14,8 +14,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ApiResource(
- * collectionOperations={},
- * itemOperations={},
+ * collectionOperations={"GET"},
+ * itemOperations={"GET"},
+ * normalizationContext={"groups":{"products:read"}},
  * )
  * @ORM\Entity(repositoryClass=BrandRepository::class)
  * @UniqueEntity("name")
