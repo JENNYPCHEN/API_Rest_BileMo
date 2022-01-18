@@ -19,7 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * normalizationContext={"groups":{"products:read"}},
  * )
  * @ORM\Entity(repositoryClass=BrandRepository::class)
- * @UniqueEntity("name")
+ * @UniqueEntity("name",message="This brand is in our database")
  */
 class Brand
 {
@@ -31,7 +31,7 @@ class Brand
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255,unique=true)
+     * @ORM\Column(type="string", length=255)
      * @Groups({"products:read"})
      * @Assert\NotBlank
      * @Assert\Length(
