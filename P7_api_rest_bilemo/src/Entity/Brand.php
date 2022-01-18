@@ -30,7 +30,7 @@ class Brand
      * @ORM\Column(type="string", length=255)
      * @Groups({"products:read"})
      */
-    private $name;
+    private $name=null;
 
     /**
      * @ORM\OneToMany(targetEntity=Product::class, mappedBy="Brand", orphanRemoval=true)

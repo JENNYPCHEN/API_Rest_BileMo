@@ -5,24 +5,26 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProductRepository;
 use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
+
 
 /**
  * @ApiResource(
- * collectionOperations={"GET"},
- * itemOperations={"GET"},
- * normalizationContext={"groups":{"products:read"}}
- * 
- * 
+ * collectionOperations={"GET"={"normalization_Context"={"groups":{"products:read"}}}},
+ * itemOperations={"GET"={"normalization_Context"={"groups":{"products:read"}}}},
+ * normalizationContext={"groups":{"products:read"}},
  *)
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  */
 class Product
 {
-    public function __construct(){
-        $this->createDate=new DateTime();
+    public function __construct()
+    {
+        $this->createDate = new DateTimeImmutable();
     }
     /**
      * @ORM\Id
@@ -36,59 +38,67 @@ class Product
      * @ORM\Column(type="string", length=255)
      * @Groups({"products:read"})
      */
-    private $name;
+    private $name=null;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"products:read"})
      */
-    private $model;
+    private $model=null;
 
     /**
      * @ORM\Column(type="string", length=500)
      * @Groups({"products:read"})
      */
-    private $description;
+    
+    private $description=null;
 
     /**
      * @ORM\Column(type="float")
      * @Groups({"products:read"})
+     * @SerializedName("price(€)")
      */
-    private $price;
-
+    private $price=null;
     /**
      * @ORM\Column(type="date")
      * @Groups({"products:read"})
+     * 
      */
-    private $releaseDate;
+    private $releaseDate=null;
 
     /**
      * @ORM\Column(type="date")
      */
-    private $createDate;
+    private $createDate=null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Brand::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"products:read"})
      */
-    private $Brand;
+    private $Brand=null;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"products:read"})
+     * @SerializedName("weight(g)")
      */
-    private $weight;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $size;
+    private $weight=null;
 
     /**
      * @ORM\Column(type="float")
+     * @SerializedName("screen size(inch)")
+     * @Groups({"products:read"})
      */
-    private $storage;
-    
+    private $size=null;
+
+    /**
+     * @ORM\Column(type="float")
+     * @Groups({"products:read"})
+     * @SerializedName("Storage(GB)")
+     */
+    private $storage=null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -117,7 +127,6 @@ class Product
 
         return $this;
     }
-
     public function getDescription(): ?string
     {
         return $this->description;
@@ -159,7 +168,7 @@ class Product
         return $this->createDate;
     }
 
-    public function setCreateDate(\DateTimeInterface $createDate): self
+    public function setCreateDate(\DateTimeImmutable $createDate): self
     {
         $this->createDate = $createDate;
 
@@ -190,12 +199,12 @@ class Product
         return $this;
     }
 
-    public function getSize(): ?string
+    public function getSize(): ?float
     {
         return $this->size;
     }
 
-    public function setSize(string $size): self
+    public function setSize(float $size): self
     {
         $this->size = $size;
 
