@@ -29,6 +29,13 @@ class Brand
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"products:read"})
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      min="5",
+     *      max="20",
+     *      minMessage="Product name should contain between 5 to 20 characters",
+     *      maxMessage="Product name should contain between 5 to 20 characters"
+     * )
      */
     private $name=null;
 

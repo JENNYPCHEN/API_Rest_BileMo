@@ -13,6 +13,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -42,18 +43,39 @@ class Product
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"products:read"})
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      min="10",
+     *      max="50",
+     *      minMessage="Product name should contain between 10 to 50 characters",
+     *      maxMessage="Product name should contain between 10 to 50 characters"
+     * )
      */
     private $name=null;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"products:read"})
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      min="5",
+     *      max="20",
+     *      minMessage="Product name should contain between 5 to 20 characters",
+     *      maxMessage="Product name should contain between 5 to 20 characters"
+     * )
      */
     private $model=null;
 
     /**
      * @ORM\Column(type="string", length=500)
      * @Groups({"products:read"})
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      min="50",
+     *      max="500",
+     *      minMessage="Product name should contain between 50 to 500 characters",
+     *      maxMessage="Product name should contain between 50 to 500 characters"
+     * )
      */
     
     private $description=null;
@@ -62,17 +84,23 @@ class Product
      * @ORM\Column(type="float")
      * @Groups({"products:read"})
      * @SerializedName("price(€)")
+     * @Assert\NotBlank
+     * @Assert\Positive
      */
     private $price=null;
     /**
      * @ORM\Column(type="date")
      * @Groups({"products:read"})
+     * @Assert\NotBlank
+     * @Assert\Date
      * 
      */
     private $releaseDate=null;
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\NotBlank
+     * @Assert\Date
      */
     private $createDate=null;
 
@@ -87,6 +115,9 @@ class Product
      * @ORM\Column(type="float")
      * @Groups({"products:read"})
      * @SerializedName("weight(g)")
+     * @Assert\NotBlank
+     * @Assert\Positive
+     * 
      */
     private $weight=null;
 
@@ -94,6 +125,8 @@ class Product
      * @ORM\Column(type="float")
      * @SerializedName("screen size(inch)")
      * @Groups({"products:read"})
+     * @Assert\NotBlank
+     * @Assert\Positive
      */
     private $size=null;
 
@@ -101,6 +134,8 @@ class Product
      * @ORM\Column(type="float")
      * @Groups({"products:read"})
      * @SerializedName("Storage(GB)")
+     * @Assert\NotBlank
+     * @Assert\Positive
      */
     private $storage=null;
 
