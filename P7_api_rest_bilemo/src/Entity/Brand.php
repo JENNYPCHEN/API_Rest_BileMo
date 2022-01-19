@@ -14,8 +14,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ApiResource(
- * collectionOperations={"GET"},
- * itemOperations={"GET"},
+ * collectionOperations={},
+ * itemOperations={"GET"={
+ * "controller"="NotFindAction::class","openapi_context"={"summary"="hidden"}}},		
  * normalizationContext={"groups":{"products:read"}},
  * )
  * @ORM\Entity(repositoryClass=BrandRepository::class)

@@ -14,21 +14,25 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 /**
  * @ApiResource(
+ * normalizationContext={"groups":{"products:read"}},
  * collectionOperations={"GET"={"normalization_Context"={"groups":{"products:read"}}}},
  * itemOperations={"GET"={"normalization_Context"={"groups":{"products:read"}}}},
- * normalizationContext={"groups":{"products:read"}},
+ * 
  * attributes={ "pagination_items_per_page"= 40}
  *)
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  * @ApiFilter(RangeFilter::class,properties={"price"})
  * @ApiFilter(SearchFilter::class, properties={"name"="partial","description"="partial"})
+ * @UniqueEntity("name",message="This product is in our database")
  */
 class Product
 {
+   
     public function __construct()
     {
         $this->createDate = new DateTime();
@@ -42,7 +46,7 @@ class Product
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255,unique=true)
      * @Groups({"products:read"})
      * @Assert\NotBlank
      * @Assert\Length(
