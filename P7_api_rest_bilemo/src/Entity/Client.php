@@ -7,13 +7,26 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use ApiPlatform\Core\Annotation\ApiResource;
+use DateTime;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * @ORM\Entity(repositoryClass=ClientRepository::class)
- * @ApiResource
+ * @ApiResource( 
+ * collectionOperations={},
+ * itemOperations={"get"},
+ * )
+ * @UniqueEntity("email",message="This email is in our database")
  */
 class Client implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    public function __construct()
+    {
+        $this->createDate = new DateTime();
+    }
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -23,39 +36,63 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank
+     * @Assert\Email(
+     * message = "The email '{{ value }}' is not a valid email."
+     * )
      */
-    private $email;
+    private $email=null;
 
     /**
      * @ORM\Column(type="json")
+     * 
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      min = 8,
+     *      max = 20,
+     *      minMessage = "Please enter at least {{ limit }} characters.",
+     *      maxMessage = "Please enter no longer than {{ limit }} characters"
+     * )
      */
-    private $password;
+    private $password=null;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank
+     *  @Assert\Length(
+     *      min = 14,
+     *      max = 14,
+     *      minMessage = "Please enter {{ limit }} characters siret number",
+     *      maxMessage = "Please enter {{ limit }} characters siret number"
+     * )
+     * 
      */
-    private $siret;
+    private $siret=null;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank
+     * @Assert\Regex("/^\(0\)[0-9]*$",message="number only")
      */
-    private $phoneNo;
+    private $phoneNo=null;
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\NotBlank
      */
-    private $createDate;
+    private $createDate=null;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
-    private $company;
+    private $company=null;
 
 
     public function getId(): ?int
@@ -159,12 +196,12 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPhoneNo(): ?int
+    public function getPhoneNo(): ?string
     {
         return $this->phoneNo;
     }
 
-    public function setPhoneNo(int $phoneNo): self
+    public function setPhoneNo(string $phoneNo): self
     {
         $this->phoneNo = $phoneNo;
 
