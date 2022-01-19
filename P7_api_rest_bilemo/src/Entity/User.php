@@ -68,6 +68,13 @@ class User
      */
     private $password;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="user",cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $client;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -141,6 +148,18 @@ class User
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): self
+    {
+        $this->client = $client;
 
         return $this;
     }

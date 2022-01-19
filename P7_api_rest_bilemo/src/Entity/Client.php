@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ClientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -25,6 +27,8 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->createDate = new DateTime();
+        $this->user = new ArrayCollection();
+
     }
 
     /**
@@ -93,6 +97,12 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\NotBlank
      */
     private $company=null;
+
+    /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="client", orphanRemoval=true)
+     */
+    private $user;
+
 
 
     public function getId(): ?int
@@ -231,5 +241,36 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUser(): Collection
+    {
+        return $this->user;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->user->contains($user)) {
+            $this->user[] = $user;
+            $user->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->user->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getClient() === $this) {
+                $user->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
 
 }
