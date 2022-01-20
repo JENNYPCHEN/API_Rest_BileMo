@@ -12,6 +12,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 /**
@@ -20,6 +22,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * collectionOperations={},
  * itemOperations={"get"},
  * )
+ * normalizationContext={"groups":{"users:read"}},
  * @UniqueEntity("email",message="This email is in our database")
  */
 class Client implements UserInterface, PasswordAuthenticatedUserInterface
@@ -27,7 +30,9 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->createDate = new DateTime();
+        $this->roles=["ROLE_ADMIN"];
         $this->user = new ArrayCollection();
+        $this->users = new ArrayCollection();
 
     }
 
@@ -41,6 +46,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank
+     * @Groups({"users:read"})
      * @Assert\Email(
      * message = "The email '{{ value }}' is not a valid email."
      * )
@@ -56,25 +62,19 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\NotBlank
-     * @Assert\Length(
-     *      min = 8,
-     *      max = 20,
-     *      minMessage = "Please enter at least {{ limit }} characters.",
-     *      maxMessage = "Please enter no longer than {{ limit }} characters"
-     * )
      */
     private $password=null;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      * @Assert\NotBlank
      *  @Assert\Length(
      *      min = 14,
-     *      max = 14,
+     *      max = 18,
      *      minMessage = "Please enter {{ limit }} characters siret number",
      *      maxMessage = "Please enter {{ limit }} characters siret number"
      * )
+     * @Assert\Regex("/^\d+$/",message="number only")
      * 
      */
     private $siret=null;
@@ -82,7 +82,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank
-     * @Assert\Regex("/^\(0\)[0-9]*$",message="number only")
+     * @Assert\Regex("/^\d+$/",message="number only")
      */
     private $phoneNo=null;
 
@@ -95,14 +95,26 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
+     * @Groups({"users:read"})
      */
     private $company=null;
 
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="client", orphanRemoval=true)
      */
-    private $user;
+    private $users;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(
+     *      min = 8,
+     *      max = 20,
+     *      minMessage = "Please enter at least {{ limit }} characters.",
+     *      maxMessage = "Please enter no longer than {{ limit }} characters"
+     * )
+     * @SerializedName("password")
+     */
+    private $plainPassword;
 
 
     public function getId(): ?int
@@ -147,7 +159,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = 'ROLE_ADMIN';
 
         return array_unique($roles);
     }
@@ -190,16 +202,15 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function eraseCredentials()
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+      $this->plainPassword = null;
     }
 
-    public function getSiret(): ?int
+    public function getSiret(): ?string
     {
         return $this->siret;
     }
 
-    public function setSiret(int $siret): self
+    public function setSiret(string $siret): self
     {
         $this->siret = $siret;
 
@@ -245,15 +256,15 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection|User[]
      */
-    public function getUser(): Collection
+    public function getUsers(): Collection
     {
-        return $this->user;
+        return $this->users;
     }
 
     public function addUser(User $user): self
     {
-        if (!$this->user->contains($user)) {
-            $this->user[] = $user;
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
             $user->setClient($this);
         }
 
@@ -262,7 +273,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeUser(User $user): self
     {
-        if ($this->user->removeElement($user)) {
+        if ($this->users->removeElement($user)) {
             // set the owning side to null (unless already changed)
             if ($user->getClient() === $this) {
                 $user->setClient(null);
@@ -271,6 +282,21 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+
+
 
 
 }

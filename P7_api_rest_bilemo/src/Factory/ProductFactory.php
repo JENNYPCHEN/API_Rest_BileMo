@@ -39,7 +39,7 @@ final class ProductFactory extends ModelFactory
     {
         return [
             // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
-            'name' => self::faker()->text(10,20),
+            'name' => self::faker()->unique()->text(10,20),
             'model' => self::faker()->text(10,20),
             'description' => self::faker()->text(50,200),
             'price' => self::faker()->numberBetween(50, 100) ,

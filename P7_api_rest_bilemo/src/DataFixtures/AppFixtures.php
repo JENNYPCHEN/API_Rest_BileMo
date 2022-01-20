@@ -11,8 +11,8 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        BrandFactory::new()->createMany(15);
-        ProductFactory::new()->createMany(50, function(){return ['brand' => BrandFactory::random()];
+        BrandFactory::new()->createMany(10);
+        ProductFactory::new()->createMany(25, function(){return ['brand' => BrandFactory::random()];
         });
 
         $manager->flush();

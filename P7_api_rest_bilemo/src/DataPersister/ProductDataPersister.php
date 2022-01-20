@@ -15,11 +15,9 @@ class ProductDataPersister implements ContextAwareDataPersisterInterface
     private $request;
 
     public function __construct(
-        EntityManagerInterface $entityManager,
-        RequestStack $request
+        EntityManagerInterface $entityManager
     ) {
         $this->entityManager = $entityManager;
-        $this->request = $request->getCurrentRequest();
     }
 
     public function supports($data, array $context = []): bool
