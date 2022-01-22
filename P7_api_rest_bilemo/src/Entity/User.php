@@ -88,9 +88,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $phoneNo=null;
 
     /**
-     * @ORM\Column(type="string", length=255)
      * @Groups({"users:write"})
      * @SerializedName("password")
+     * @Assert\NotBlank
     * @Assert\Length(
     *      min = 8,
     *      max = 20,
@@ -141,7 +141,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->username;
+        return (string) $this->email;
     }
 
     /**
