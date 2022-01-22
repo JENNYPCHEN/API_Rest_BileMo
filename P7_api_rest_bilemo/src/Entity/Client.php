@@ -105,7 +105,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     private $users;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Length(
      *      min = 8,
      *      max = 20,
