@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity(repositoryClass=ClientRepository::class)
  * @ApiResource( 
  * collectionOperations={},
- * itemOperations={"get"},
+ * itemOperations={"get"={"normalization_context"={"groups":{"clients:read"}},"security"="is_granted('ROLE_ADMIN') and object===user","security_message"="You can only read your detail. Please try again"}},
  * )
  * normalizationContext={"groups":{"users:read"}},
  * @UniqueEntity("email",message="This email is in our database")
@@ -40,13 +40,15 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"clients:read"})
+     * 
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank
-     * @Groups({"users:read"})
+     * @Groups({"users:read","clients:read"})
      * @Assert\Email(
      * message = "The email '{{ value }}' is not a valid email."
      * )
@@ -67,6 +69,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string")
+     * @Groups({"clients:read"})
      * @Assert\NotBlank
      *  @Assert\Length(
      *      min = 14,
@@ -82,12 +85,14 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank
+     * @Groups({"clients:read"})
      * @Assert\Regex("/^\d+$/",message="number only")
      */
     private $phoneNo=null;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups({"clients:read"})
      * @Assert\NotBlank
      */
     private $createDate=null;
@@ -95,7 +100,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
-     * @Groups({"users:read"})
+     * @Groups({"users:read","clients:read"})
      */
     private $company=null;
 
@@ -294,6 +299,10 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function hasRoles(string $roles): bool
+    {
+        return in_array($roles, $this->roles);
+    }
 
 
 
