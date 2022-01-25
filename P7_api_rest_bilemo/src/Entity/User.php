@@ -19,6 +19,16 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  * @ApiResource(
  * denormalizationContext={"groups":{"users:write"}},
  * normalizationContext={"groups":{"users:read"}},
+ * collectionOperations={
+ *         "get",
+ *         "post"={"security"="is_granted('ROLE_ADMIN')"},
+ *     },
+ * itemOperations={
+ *         "get"={"security"="is_granted('get',object)","security_message"="You can only acess the details of your users. Please try again"},
+ *         "put"={"security"="is_granted('edit', object)","security_message"="You can only acess the details of your users. Please try again"},
+ *         "patch"={"security"="is_granted('edit', object)","security_message"="You can only acess  the details of your users. Please try again"},
+ *         "delete"={"security"="is_granted('delete', object)","security_message"="You can only acess  the details of your users. Please try again"},
+ *     },
  *  )
  * @UniqueEntity("email",message="This email/username is already in the system.","username",message="This email/username is already in the system.")
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -141,7 +151,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string) $this->username;
     }
 
     /**
@@ -280,4 +290,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+    public function hasRoles(string $roles): bool
+    {
+        return in_array($roles, $this->roles);
+    }
+
 }

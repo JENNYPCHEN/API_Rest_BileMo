@@ -20,8 +20,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ApiResource(
  * normalizationContext={"groups":{"products:read"}},
- * collectionOperations={"GET"={"normalization_Context"={"groups":{"products:read"}}}},
- * itemOperations={"GET"={"normalization_Context"={"groups":{"products:read"}}}},
+ * collectionOperations={"GET"={"normalization_context"={"groups":{"products:read"}}}},
+ * itemOperations={"GET"={"normalization_context"={"groups":{"products:read"}}}},
  * 
  * attributes={ "pagination_items_per_page"= 40}
  *)
