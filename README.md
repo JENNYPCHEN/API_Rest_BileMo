@@ -72,7 +72,8 @@ $ php bin/console doctrine:fixtures:load
 ``` bash
 $ php bin/console lexik:jwt:generate-keypair
 ```
-<h4>wohooo</h4>
-Here you go! you can go to "/api" to see the API documentation !
+<h4>Wohooo</h4>
+Here you go! you can go to "/api" to see the API documentation !</br>
 
-Have a great day!
+Have a great day!</br></br>
+ChingYi P.C
