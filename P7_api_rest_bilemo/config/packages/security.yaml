@@ -58,7 +58,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
       - { path: ^/api/login, roles: PUBLIC_ACCESS }
-      - { path: ^/api/docs, roles:  PUBLIC_ACCESS } 
+      - { path: ^/api/, roles:  PUBLIC_ACCESS } 
       - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
       - { path: ^/api/products, roles: ROLE_ADMIN }
       - { path: ^/api/brands, roles: ROLE_ADMIN  }
