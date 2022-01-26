@@ -1,4 +1,5 @@
 # API_Rest_BileMo
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/1165349d597246e1afcced713bc1db27)](https://www.codacy.com/gh/JENNYPCHEN/API_Rest_BileMo/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=JENNYPCHEN/API_Rest_BileMo&amp;utm_campaign=Badge_Grade)
 
 Hi there,
 
