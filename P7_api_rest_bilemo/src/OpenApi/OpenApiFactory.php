@@ -5,6 +5,7 @@ namespace App\OpenApi;
 use ApiPlatform\Core\OpenApi\Factory\OpenApiFactoryInterface;
 use ApiPlatform\Core\OpenApi\Model\PathItem;
 use ApiPlatform\Core\OpenApi\OpenApi;
+use ApiPlatform\Core\OpenApi\Model;
 
 class OpenApiFactory implements OpenApiFactoryInterface
 {
@@ -28,6 +29,10 @@ class OpenApiFactory implements OpenApiFactoryInterface
                 $openApi->getPaths()->addPath($key, $path->withGet(null));
             }
         }
+        $openApi = $openApi->withInfo((new Model\Info('BileMo', 'v2', ' A REST Symfony API dedicated to BileMo clients.'))->withExtensionProperty('info-key', 'Info value'));
+        $openApi = $openApi->withExtensionProperty('key', 'Custom x-key value');
+        $openApi = $openApi->withExtensionProperty('x-value', 'Custom x-value value');
+
 
         return $openApi;
     }

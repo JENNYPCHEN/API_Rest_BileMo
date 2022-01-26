@@ -23,6 +23,8 @@ security:
             pattern: ^/api/token/refresh
             stateless: true
             refresh_jwt: ~
+        
+
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false

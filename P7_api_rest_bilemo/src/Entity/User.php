@@ -26,8 +26,8 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  * itemOperations={
  *         "get"={"security"="is_granted('get',object)","security_message"="You can only acess the details of your users. Please try again"},
  *         "put"={"security"="is_granted('edit', object)","security_message"="You can only acess the details of your users. Please try again"},
- *         "patch"={"security"="is_granted('edit', object)","security_message"="You can only acess  the details of your users. Please try again"},
- *         "delete"={"security"="is_granted('delete', object)","security_message"="You can only acess  the details of your users. Please try again"},
+ *         "patch"={"security"="is_granted('edit', object)","security_message"="You can only acess the details of your users. Please try again"},
+ *         "delete"={"security"="is_granted('delete', object)","security_message"="You can only acess the details of your users. Please try again"},
  *     },
  *  )
  * @UniqueEntity("email",message="This email/username is already in the system.","username",message="This email/username is already in the system.")
