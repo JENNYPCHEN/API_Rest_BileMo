@@ -4,3 +4,6 @@ gesdinet_jwt_refresh_token:
 api_login_check:
     path: /api/login
 
+api_logout:
+  path: /api/logout
+  methods: ['POST']
