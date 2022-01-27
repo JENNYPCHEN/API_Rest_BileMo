@@ -87,6 +87,9 @@ class OpenApiFactory implements OpenApiFactoryInterface
             )
         );
         $openApi->getPaths()->addPath('/api/login', $pathItem);
+#refresh token 
+
+
 
         foreach ($openApi->getPaths()->getPaths() as $key => $path) {
             if ($path->getGet() && $path->getGet()->getSummary() === 'hidden') {
