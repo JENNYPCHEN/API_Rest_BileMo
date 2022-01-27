@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity(repositoryClass=ClientRepository::class)
  * @ApiResource( 
  * collectionOperations={},
- * itemOperations={"get"={"normalization_context"={"groups":{"clients:read"}},"security"="is_granted('ROLE_ADMIN') and object===user","security_message"="You can only read your detail. Please try again"}},
+ * itemOperations={"get"={ "controller"="NotFindAction::class","openapi_context"={"summary"="hidden"},"normalization_context"={"groups":{"clients:read"}},"security"="is_granted('ROLE_ADMIN') and object===user","security_message"="You can only read your detail. Please try again"}},
  * )
  * normalizationContext={"groups":{"users:read"}},
  * @UniqueEntity("email",message="This email is in our database")
