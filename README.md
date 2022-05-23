@@ -77,4 +77,5 @@ $ php bin/console lexik:jwt:generate-keypair
 Here you go! you can go to "/api" to see the API documentation !</br>
 
 Have a great day!</br></br>
-ChingYi P.C
+ChingYi P.C<br>
+http://chingyipc.com/
